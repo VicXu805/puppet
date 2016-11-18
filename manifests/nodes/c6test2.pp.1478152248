@@ -1,0 +1,3 @@
+node 'c6test2' {
+include nginx 
+}

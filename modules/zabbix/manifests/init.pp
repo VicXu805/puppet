@@ -1,0 +1,23 @@
+class zabbix {
+package { 'zabbix-agent':
+ensure => installed,
+require => Yumrepo["zabbix"],
+}
+yumrepo {'zabbix':
+baseurl => "http://repo.zabbix.com/zabbix/2.0/rhel/\$releasever/\$basearch/",
+descr => "Zabbix Official Repository",
+gpgcheck => 0,
+enabled => 1,
+}
+file { '/etc/zabbix/zabbix_agentd.conf':
+content => template("zabbix/zabbix_agentd_conf.erb"),
+ensure => file,
+}
+service { 'zabbix-agent':
+ensure => "running",
+hasstatus => true,
+enable => true,
+subscribe => [File["/etc/zabbix/zabbix_agentd.conf"]],
+}
+Package["zabbix-agent"] -> File["/etc/zabbix/zabbix_agentd.conf"] -> Service["zabbix-agent"]
+}

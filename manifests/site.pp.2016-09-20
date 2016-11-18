@@ -1,0 +1,20 @@
+node default {
+file { "/tmp/test":
+content=>"hello test",
+mode => 0644;
+}
+
+group{"test":
+ensure=>"present",
+gid=>2000,
+}
+
+user{"test":
+uid=>2000,
+gid=>2000,
+home=>"/home/test",
+shell=>"/bin/bash";
+}
+
+
+}
